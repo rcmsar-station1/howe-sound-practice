@@ -205,7 +205,7 @@ const LIGHTS = [
  {id:'look', n:'Lookout Point',    c:'R', ch:'Q R 1s',    s:'Q1',  r:5, lon:-123.2903229, lat:49.376479,  no:'422'},
  {id:'tyee', n:'Tyee Point',       c:'W', ch:'Q W 1s',    s:'Q1',  r:6, lon:-123.2739903, lat:49.3805485, no:'423'},
  {id:'fish', n:"Fisherman's Cove", c:'R', ch:'Fl R 4s',   s:'Fl4', r:4, lon:-123.276415,  lat:49.3544744, no:'421'},
- {id:'eagle',n:'Eagle Harbour',    c:'W', ch:'Fl (private)', s:'Fl4', r:3, lon:-123.2707268, lat:49.3537928, unv:1},
+ {id:'eagle',n:'Eagle Harbour (private)', c:'W', ch:'Fl W 4s', s:'Fl4', r:3, lon:-123.2707268, lat:49.3537928},
  {id:'qb',   n:'Buoy QB',          c:'Y', ch:'Fl Y 4s',   s:'Fl4', r:3, lon:-123.2030935, lat:49.3232297, no:'388'},
  {id:'fin',  n:'Finisterre Island',c:'W', ch:'Q W 1s',    s:'Q1',  r:4, lon:-123.3089041, lat:49.4181679, no:'420'},
  {id:'snug', n:'Snug Cove',        c:'G', ch:'Fl G 4s',   s:'Fl4', r:4, lon:-123.3319222, lat:49.379399,  no:'419'},
@@ -213,15 +213,15 @@ const LIGHTS = [
  {id:'cowan',n:'Point Cowan',      c:'W', ch:'Q W 1s',    s:'Q1',  r:7, lon:-123.3610202, lat:49.3360939, no:'418'},
  {id:'crc',  n:'Cape Roger Curtis',c:'W', ch:'Fl(3) W 12s',s:'Fl3_12',r:5, lon:-123.4313755, lat:49.3401486, no:'417'},
  {id:'popham',n:'Popham Island',   c:'R', ch:'Fl R 4s',   s:'Fl4', r:4, lon:-123.4918828, lat:49.3627981, no:'432'},
- {id:'hopk', n:'Hopkins Landing',  c:'Y', ch:'Fl Y',      s:'Fl4', r:3, lon:-123.4791102, lat:49.4282957, unv:1},
- {id:'lang', n:'Langdale',         c:'R', ch:'Fl R (4 lights)', s:'Fl4', r:3, lon:-123.4731021, lat:49.4341011, unv:1},
+ {id:'hopk', n:'Hopkins Landing',  c:'Y', ch:'Fl Y 4s',   s:'Fl4', r:3, lon:-123.4791102, lat:49.4282957},
+ {id:'lang', n:'Langdale (4 lights)', c:'R', ch:'Fl R 4s', s:'Fl4', r:3, lon:-123.4731021, lat:49.4341011},
  {id:'grace',n:'Grace Islands',    c:'W', ch:'Fl W 4s',   s:'Fl4', r:5, lon:-123.4480537, lat:49.4305705, no:'429'},
  {id:'hope', n:'Hope Point',       c:'W', ch:'Fl(3) W 12s',s:'Fl3_12',r:5, lon:-123.366011, lat:49.4309882, no:'420.4'},
- {id:'brig', n:'Brigade Bay',      c:'G', ch:'Fl G (private)', s:'Fl4', r:3, lon:-123.3319798, lat:49.4861115, unv:1},
+ {id:'brig', n:'Brigade Bay (private)', c:'G', ch:'Fl G 4s', s:'Fl4', r:3, lon:-123.3319798, lat:49.4861115},
  {id:'pam',  n:'Pam Rock',         c:'W', ch:'Fl W 4s',   s:'Fl4', r:5, lon:-123.2993797, lat:49.4878,    no:'424'},
  {id:'ekins',n:'Ekins Point',      c:'W', ch:'Fl(3) W 12s',s:'Fl3_12',r:5, lon:-123.3805108, lat:49.5340159, no:'428'},
  {id:'brun', n:'Brunswick Point',  c:'R', ch:'Fl R 4s',   s:'Fl4', r:4, lon:-123.2606935, lat:49.526271,  no:'425'},
- {id:'port', n:'Porteau Cove',     c:'R', ch:'Fl R',      s:'Fl4', r:3, lon:-123.2353736, lat:49.5560111, unv:1}
+ {id:'port', n:'Porteau Cove',     c:'R', ch:'Fl R 4s',   s:'Fl4', r:3, lon:-123.2353736, lat:49.5560111}
 ];
 const LAB = {lang:{a:'end',dy:-3},hopk:{a:'end',dy:12},brig:{a:'end',dy:0},snugn:{a:'end',dy:-8},snug:{a:'end',dy:12},fish:{a:'end',dy:0},tyee:{dy:-9},look:{dy:7},grace:{dy:-2},pam:{dy:-4}};
 const COL = {R:'var(--lr)',G:'var(--lg)',W:'var(--lw)',Y:'var(--ly)'};
@@ -357,13 +357,13 @@ function render(){
   <h2>${q.prompt}</h2>${q.sub?`<p class="muted">${q.sub}</p>`:''}
   <div class="choices">${q.opts.map((o,i)=>`<button data-pick="${i}" class="${q.picked?(o===q.ans?'right':(o===q.picked?'wrong':'')):''}" ${q.picked?'disabled':''}><kbd>${i+1}</kbd>${o}</button>`).join('')}</div>
   ${q.picked?`<div class="feedback ${right?'good':'bad'}"><b>${right?'Correct.':'Not quite.'}</b> ${detail(q)}</div><div class="btnrow"><button class="btn" data-act="next">${Q.i===Q.round.length-1?'See results':'Next question'} →</button></div>`:''}
-  <p class="foot muted">${q.k==='island'||q.k==='bay'?'Positions from BC Geographical Names.':'Characteristics from the CCG List of Lights, Howe Sound section.'}</p>`;
+  <p class="foot muted">${q.k==='island'||q.k==='bay'?'Positions from BC Geographical Names.':'Characteristics from the CCG List of Lights and the station Aids to Navigation sheet.'}</p>`;
   zoomUI();
 }
 function detail(q){
   if(q.k==='island'||q.k==='bay') return `That's <b>${q.I.name}</b>.`;
   const L=q.L;
-  return `<b>${L.n}</b> shows <span class="char" style="color:${hex(L.c)}">${L.ch}</span>.${L.id==='fin'?' <span class="flag">Some station material says every 4 s; the 2019 List of Lights says Q W 1s.</span>':''}`;
+  return `<b>${L.n}</b> shows <span class="char" style="color:${hex(L.c)}">${L.ch}</span>.`;
 }
 function choose(i){const q=Q.round[Q.i];if(!q||q.picked)return;q.picked=q.opts[i];q.ok=q.picked===q.ans;if(q.ok)Q.score++;else Q.missed.push({q:q.k==='island'||q.k==='bay'?q.prompt.replace('Name this ',''):q.k==='lightName'?'Light at this position':q.k==='flash'?'Flash pattern':q.L.n,a:q.k==='lightChar'||q.k==='flash'?`${q.L.ch} (${q.L.n})`:q.ans});render()}
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
